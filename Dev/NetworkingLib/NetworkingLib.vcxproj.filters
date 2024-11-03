@@ -1,0 +1,72 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="pch">
+      <UniqueIdentifier>{ba2fc863-2e97-4f2c-ab80-bed941eaf26e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Socket">
+      <UniqueIdentifier>{712407f5-e1d5-4718-904f-9c091243a60b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utils">
+      <UniqueIdentifier>{89742951-432b-470f-bc32-983ac1df6a8f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utils\NetworkUtils">
+      <UniqueIdentifier>{07ef5aad-72cf-46aa-aa26-4ef655b5b7bf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="WSA">
+      <UniqueIdentifier>{ce2f561c-06c5-432f-9120-af23d62e4b94}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common">
+      <UniqueIdentifier>{92b5be92-e677-4200-a33a-90bc2f65bfd9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utils\BufferUtils">
+      <UniqueIdentifier>{dccfe52f-cf9d-4ed1-be29-90e99c499d9a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Endpoint">
+      <UniqueIdentifier>{585030f3-1716-4f56-b151-df77732884f3}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="pch.hpp">
+      <Filter>pch</Filter>
+    </ClInclude>
+    <ClInclude Include="Socket.hpp">
+      <Filter>Socket</Filter>
+    </ClInclude>
+    <ClInclude Include="NetworkUtils.hpp">
+      <Filter>Utils\NetworkUtils</Filter>
+    </ClInclude>
+    <ClInclude Include="AutoWSA.hpp">
+      <Filter>WSA</Filter>
+    </ClInclude>
+    <ClInclude Include="BufferUtils.hpp">
+      <Filter>Utils\BufferUtils</Filter>
+    </ClInclude>
+    <ClInclude Include="Endpoint.hpp">
+      <Filter>Endpoint</Filter>
+    </ClInclude>
+    <ClInclude Include="NetworkException.hpp">
+      <Filter>Common</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="pch.cpp">
+      <Filter>pch</Filter>
+    </ClCompile>
+    <ClCompile Include="Socket.cpp">
+      <Filter>Socket</Filter>
+    </ClCompile>
+    <ClCompile Include="AutoWSA.cpp">
+      <Filter>WSA</Filter>
+    </ClCompile>
+    <ClCompile Include="NetworkStatus.hpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Common.hpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Endpoint.cpp">
+      <Filter>Endpoint</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
