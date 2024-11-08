@@ -17,6 +17,7 @@ namespace Network
         AutoWSA& operator=(AutoWSA&&) = delete;
     
         static void s_initialize();
+        static bool s_is_initialized();
 
     private:
         AutoWSA();

@@ -25,8 +25,12 @@ namespace Network
         {
             throw Exception(Status::AUTOWSA_S_INITIALIZE_WSA_ALREADY_INITIALIZED);
         }
-
         g_instance = std::unique_ptr<AutoWSA>(new AutoWSA());
+    }
+
+    bool AutoWSA::s_is_initialized()
+    {
+        return nullptr != g_instance;
     }
 
     WSADATA AutoWSA::_s_initialize_wsa()

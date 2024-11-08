@@ -1,22 +1,49 @@
 #include <iostream>
+#include <thread>
 #include "NetworkException.hpp"
 #include "AutoWSA.hpp"
 #include "Socket.hpp"
+#include "TcpServer.hpp"
+
+class JoinableThread
+{
+public:
+    template<typename... TArgs>
+    JoinableThread(TArgs... args) : m_thread(std::forward<TArgs>(args)...) {}
+    virtual ~JoinableThread() { m_thread.join(); }
+
+private:
+    std::thread m_thread;
+};
 
 int main()
 {
+    static constexpr uint16_t PORT = 6969;
+
     try
     {
         Network::AutoWSA::s_initialize();
-        const auto socket = std::make_unique<Network::Socket>();
 
-        socket->connect(Network::EndpointIPv4(L"142.250.75.78", 80));
+        std::vector<std::thread> threads;
 
-        std::string request = "GET / HTTP/1.1\r\nHost: google.com\r\nUserAgent: NetworkExe\r\n\r\n";
+        for (uint32_t i = 0; i < 10; ++i)
+        {
+            threads.emplace_back([i]()
+                {
+                    Network::Socket server(Network::EndpointIPv4::s_get_loopback_endpoint(PORT));
+                    std::wcout << (wchar_t*)server.receive().data() << std::endl;
+                    server.send(BufferUtils::container_to_buffer(std::to_wstring(i) + L": Hello back from client!"));
+                });
+        }
 
-        socket->send(Buffer(request.begin(), request.end()));
-        Buffer buffer = socket->receive();
-        std::cout << buffer.data() << std::endl;
+        Network::TcpServer server(PORT);
+
+        while (true)
+        {
+            Network::SocketUPtr client = server.accept();
+            client->send(BufferUtils::container_to_buffer(std::wstring(L"Hello from server!")));
+            std::wcout << (wchar_t*)client->receive().data() << std::endl;
+        }
     }
     catch (const Network::Exception& e)
     {

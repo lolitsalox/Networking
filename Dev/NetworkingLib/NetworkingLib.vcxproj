@@ -140,6 +140,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.hpp</PrecompiledHeaderFile>
       <TreatWarningAsError>true</TreatWarningAsError>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -181,6 +182,7 @@
     <ClInclude Include="NetworkUtils.hpp" />
     <ClInclude Include="pch.hpp" />
     <ClInclude Include="Socket.hpp" />
+    <ClInclude Include="TcpServer.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AutoWSA.cpp" />
@@ -194,6 +196,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Socket.cpp" />
+    <ClCompile Include="TcpServer.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

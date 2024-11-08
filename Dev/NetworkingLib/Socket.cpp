@@ -1,11 +1,20 @@
 #include "pch.hpp"
 #include "Common.hpp"
+#include "AutoWSA.hpp"
 #include "Socket.hpp"
 
 namespace Network
 {
     Socket::Socket(const AddressFamily address_family, const SocketType type, const Protocol protocol) :
         m_socket(_s_create_socket(address_family, type, protocol))
+    {}
+
+    Socket::Socket(SOCKET socket) :
+        m_socket(socket)
+    {}
+
+    Socket::Socket(const EndpointIPv4 endpoint) :
+        m_socket(_s_connect(endpoint))
     {}
 
     Socket::~Socket()
@@ -23,6 +32,11 @@ namespace Network
 
     SOCKET Socket::_s_create_socket(const AddressFamily address_family, const SocketType type, const Protocol protocol)
     {
+        if (!AutoWSA::s_is_initialized())
+        {
+            throw Exception(Status::SOCKET_S_CREATE_SOCKET_WSA_NOT_INITIALIZED);
+        }
+
         SOCKET socket = ::WSASocketW(static_cast<int>(address_family), 
                                      static_cast<int>(type), 
                                      static_cast<int>(protocol),
@@ -36,25 +50,20 @@ namespace Network
         return socket;
     }
 
-    void Socket::bind(const EndpointIPv4& endpoint)
+    SOCKET Socket::_s_connect(const EndpointIPv4& endpoint)
     {
-        const sockaddr_in sockaddr = endpoint.get_sockaddr();
-        if (SOCKET_ERROR == ::bind(m_socket, reinterpret_cast<const SOCKADDR*>(&sockaddr), sizeof(sockaddr)))
-        {
-            throw Exception(Status::SOCKET_BIND_BIND_FAILED, WSAGetLastError());
-        }
-    }
+        SOCKET socket = _s_create_socket();
 
-    void Socket::connect(const EndpointIPv4& endpoint)
-    {
         const sockaddr_in sockaddr = endpoint.get_sockaddr();
-        if (SOCKET_ERROR == ::WSAConnect(m_socket, 
+        if (SOCKET_ERROR == ::WSAConnect(socket, 
                                          reinterpret_cast<const SOCKADDR*>(&sockaddr), 
                                          sizeof(sockaddr), 
                                          nullptr, nullptr, nullptr, nullptr))
         {
             throw Exception(Status::SOCKET_CONNECT_WSACONNECT_FAILED, WSAGetLastError());
         }
+
+        return socket;
     }
 
     void Socket::send(const Buffer& buffer)

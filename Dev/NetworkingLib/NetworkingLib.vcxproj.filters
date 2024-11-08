@@ -25,6 +25,12 @@
     <Filter Include="Endpoint">
       <UniqueIdentifier>{585030f3-1716-4f56-b151-df77732884f3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Tcp">
+      <UniqueIdentifier>{a9adf311-bd0b-4861-b377-85bc2d3cbc69}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tcp\TcpServer">
+      <UniqueIdentifier>{7f753e91-6c7d-4d69-97ee-033f38ffeaae}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.hpp">
@@ -48,6 +54,9 @@
     <ClInclude Include="NetworkException.hpp">
       <Filter>Common</Filter>
     </ClInclude>
+    <ClInclude Include="TcpServer.hpp">
+      <Filter>Tcp\TcpServer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -67,6 +76,9 @@
     </ClCompile>
     <ClCompile Include="Endpoint.cpp">
       <Filter>Endpoint</Filter>
+    </ClCompile>
+    <ClCompile Include="TcpServer.cpp">
+      <Filter>Tcp\TcpServer</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
