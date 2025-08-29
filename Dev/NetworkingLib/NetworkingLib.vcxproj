@@ -141,6 +141,7 @@
       <PrecompiledHeaderFile>pch.hpp</PrecompiledHeaderFile>
       <TreatWarningAsError>true</TreatWarningAsError>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <LanguageStandard>stdcpp23</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>

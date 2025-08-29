@@ -1,20 +1,12 @@
 #include <iostream>
 #include <thread>
+#include <print>
+
 #include "NetworkException.hpp"
 #include "AutoWSA.hpp"
 #include "Socket.hpp"
 #include "TcpServer.hpp"
 
-class JoinableThread
-{
-public:
-    template<typename... TArgs>
-    JoinableThread(TArgs... args) : m_thread(std::forward<TArgs>(args)...) {}
-    virtual ~JoinableThread() { m_thread.join(); }
-
-private:
-    std::thread m_thread;
-};
 
 int main()
 {
@@ -24,26 +16,37 @@ int main()
     {
         Network::AutoWSA::s_initialize();
 
-        std::vector<std::thread> threads;
+        std::vector<std::thread> threads(10);
 
         for (uint32_t i = 0; i < 10; ++i)
         {
             threads.emplace_back([i]()
                 {
                     Network::Socket server(Network::EndpointIPv4::s_get_loopback_endpoint(PORT));
-                    std::wcout << (wchar_t*)server.receive().data() << std::endl;
-                    server.send(BufferUtils::container_to_buffer(std::to_wstring(i) + L": Hello back from client!"));
+                    std::println("Server: {}", reinterpret_cast<char*>(server.receive().data()));
+                    server.send(BufferUtils::container_to_buffer(std::to_string(i) + ": Hello back from client!"));
                 });
         }
 
+        std::vector<std::thread> server_threads;
         Network::TcpServer server(PORT);
 
-        while (true)
+        auto client_handler = [](Network::SocketUPtr client)
         {
-            Network::SocketUPtr client = server.accept();
-            client->send(BufferUtils::container_to_buffer(std::wstring(L"Hello from server!")));
-            std::wcout << (wchar_t*)client->receive().data() << std::endl;
-        }
+            client->send(BufferUtils::container_to_buffer(std::string("Hello from server!")));
+            std::println("Client: {}", reinterpret_cast<char*>(client->receive().data()));
+        };
+        
+        auto connect_handler = [&server, &server_threads, &client_handler]()
+        {
+            while (true)
+            {
+                server_threads.emplace_back(client_handler, server.accept());
+            }
+        };
+        
+        std::thread connector(connect_handler);
+        connector.join();
     }
     catch (const Network::Exception& e)
     {
